@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="filtering-jars">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../kafka-filtering-master/filtering-jars" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../kafka-filtering-master/filtering-jars" recursive="false" />
+  </library>
+</component>

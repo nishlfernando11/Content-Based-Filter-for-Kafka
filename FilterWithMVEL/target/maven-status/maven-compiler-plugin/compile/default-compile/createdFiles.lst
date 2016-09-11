@@ -1,0 +1,6 @@
+com\filter\clients\FilterProducer.class
+com\filter\clients\FilterProducer$1.class
+com\filter\layer\Filter.class
+com\filter\App.class
+com\filter\layer\FilterImpl.class
+com\filter\clients\FilterConsumer.class

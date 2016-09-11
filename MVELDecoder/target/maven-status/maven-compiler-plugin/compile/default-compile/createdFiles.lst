@@ -1,0 +1,10 @@
+main\java\com\filter\model\FilterWrapper.class
+main\java\com\filter\exp\FilterExpression.class
+main\java\com\filter\google\flatbuffers\FlatBufferBuilder.class
+main\java\com\filter\Coder.class
+main\java\com\filter\google\flatbuffers\Table.class
+main\java\com\filter\fds\FB_Tuple.class
+main\java\com\filter\exp\MvelExpression.class
+main\java\com\filter\fds\FB_FilterWrap.class
+main\java\com\filter\google\flatbuffers\Struct.class
+main\java\com\filter\google\flatbuffers\Constants.class
