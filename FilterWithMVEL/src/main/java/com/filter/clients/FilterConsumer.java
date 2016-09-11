@@ -1,4 +1,4 @@
-package com.filter.clients;
+package main.java.com.filter.clients;
 
 /**
  * Created with IntelliJ IDEA.
