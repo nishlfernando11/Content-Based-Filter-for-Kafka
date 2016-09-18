@@ -16,20 +16,22 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.Scanner;
 
 public class FilterConsumer {
 
     private static Coder codec = new Coder();
-
     private static FilterExpression falseExpression = new MvelExpression("entity==1");
-    private static FilterExpression trueExpression = new MvelExpression("entity=='ORDER' && type == 'CREATE'");
+    private static FilterExpression trueExpression;
 
-    public static void main(String[] args) throws Exception {
+
+    public static void start(String topic, ArrayList<String> contentArray) throws Exception {
 
         //Kafka consumer configuration settings
-        String topicName = "mytopic";
+        String topicName = topic;
         Properties props = new Properties();
 
         props.put("bootstrap.servers", "localhost:9092");
@@ -39,11 +41,20 @@ public class FilterConsumer {
         props.put("session.timeout.ms", "30000");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
+
         KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<byte[], byte[]>(props);
 
         //Kafka Consumer subscribes list of topics here.
-        consumer.subscribe(Arrays.asList(topicName, "test1"));
+        consumer.subscribe(Arrays.asList(topicName));
 
+        StringBuilder builder = new StringBuilder();
+        for(int x = 0; x < contentArray.size(); x++){
+            builder.append("'"+contentArray.get(x)+"'==true");
+            if(x != contentArray.size()-1)builder.append(" && ");
+        }
+        System.out.println(builder.toString());
+
+        trueExpression = new MvelExpression(builder.toString());
         //print the topic name
         System.out.println("Subscribed to topic " + topicName);
         int i = 0;
@@ -57,12 +68,31 @@ public class FilterConsumer {
 
                 String recv = new String(wrappedMsg.getData());
 
-                if(trueExpression.isInteresting(wrappedMsg)){
-                    System.out.println(recv);
+                try{
+                    if(trueExpression.isInteresting(wrappedMsg)){
+                        System.out.println(recv);
+                    }
+                }catch (NullPointerException e){
+
                 }
+
 //              print the offset,key and value for the consumer records.
                 //System.out.printf("offset = %d, key = %s, value = %s\n",record.offset(), record.key(), wrappedMsg.getData());
             }
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        System.out.println("Starting consumer...Enter your interests.. Press 'end' to terminate.");
+        String topic = args[1];
+        Scanner scn = new Scanner(System.in);
+        ArrayList<String> list = new ArrayList<String>();
+        while(true){
+            String input = scn.nextLine();
+            if(input.equalsIgnoreCase("end")) break;
+            list.add(input);
+        }
+        //String[] content = {args[3],args[4]};
+        start(topic, list);
     }
 }

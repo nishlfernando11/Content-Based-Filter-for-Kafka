@@ -1,4 +1,4 @@
-package com.filter.layer;
+package main.java.com.filter.layer;
 
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 

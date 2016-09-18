@@ -7,6 +7,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="jtopia-0.0.3" level="project" />
+    <orderEntry type="library" name="mvel2-2.2.2.Final" level="project" />
+    <orderEntry type="library" name="libs" level="project" />
+    <orderEntry type="library" name="junit-3.8.2" level="project" />
   </component>
 </module>
 

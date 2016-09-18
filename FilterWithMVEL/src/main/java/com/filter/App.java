@@ -1,4 +1,4 @@
-package com.filter;
+package main.java.com.filter;
 
 /**
  * Hello world!

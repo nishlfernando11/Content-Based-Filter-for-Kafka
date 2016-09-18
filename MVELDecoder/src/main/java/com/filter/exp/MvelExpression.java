@@ -1,13 +1,9 @@
 package main.java.com.filter.exp;
 
 import org.mvel2.MVEL;
-
 import java.io.Serializable;
 import java.util.Map;
 
-/**
- * Created by pradeep on 22/06/15.
- */
 public class MvelExpression extends FilterExpression {
 
     private final Serializable compiled;
@@ -17,7 +13,11 @@ public class MvelExpression extends FilterExpression {
     }
 
     @Override
-    public boolean isInteresting(Map<String, String> tags) {
-        return (Boolean) MVEL.executeExpression(compiled, tags);
+    public boolean isInteresting(Map<String, String> tags) throws NullPointerException{
+        try {
+            return (Boolean) MVEL.executeExpression(compiled, tags);
+        }catch (Exception e){
+            throw new NullPointerException();
+        }
     }
 }
