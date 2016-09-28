@@ -197,7 +197,7 @@
       <module fileurl="file://$PROJECT_DIR$/content-filter-kafka.iml" filepath="$PROJECT_DIR$/content-filter-kafka.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/production" />
   </component>
   <component name="VcsDirectoryMappings">
@@ -209,14 +209,14 @@
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../KeywordExtract/jtopia/target/jtopia-0.0.3.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../KeywordExtract/jtopia/target/original-jtopia-0.0.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../KeywordExtract/jtopia/StringHelpers-0.0.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../KeywordExtract/StringHelpers/target/StringHelpers-0.0.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="junit-3.8.2">
+    <library name="junit-4.8">
       <CLASSES>
-        <root url="jar://D:/repo/junit/junit/3.8.2/junit-3.8.2.jar!/" />
+        <root url="jar://D:/repo/junit-4.8.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -235,6 +235,21 @@
     <library name="mvel2-2.2.2.Final">
       <CLASSES>
         <root url="jar://D:/repo/org/mvel/mvel2/2.2.2.Final/mvel2-2.2.2.Final.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="slf4j-api">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../KeywordExtract/stanford-postagger-2015-12-09/lib/slf4j-api.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../KeywordExtract/stanford-postagger-2015-12-09/lib/slf4j-simple.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="stanford-postagger">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../KeywordExtract/stanford-postagger-2015-12-09/stanford-postagger.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

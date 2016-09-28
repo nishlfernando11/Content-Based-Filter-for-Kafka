@@ -14,15 +14,19 @@ public class Coder {
 
     public byte[] encode(byte[] serializedWithoutWrap, Map<String, String> tags) {
 
+
+        //get flatbuffers to encode message
         FlatBufferBuilder fbb = new FlatBufferBuilder(1024);
         int[] tagsArr = new int[tags.size()];
 
         int i = 0;
+        //get tags and add to buffer
         for (Map.Entry<String, String> entry : tags.entrySet()) {
             tagsArr[i] = _encodeEntry(entry, fbb);
             i++;
         }
 
+        //integrate the data with the buffer
         int tagsRef = FB_FilterWrap.createTagsVector(fbb, tagsArr);
         int dataRef = FB_FilterWrap.createDataVector(fbb, serializedWithoutWrap);
         int filterWrapRef = FB_FilterWrap.createFB_FilterWrap(fbb, tagsRef, dataRef);
@@ -35,23 +39,27 @@ public class Coder {
     }
 
     private static int _encodeEntry(Map.Entry<String, String> entry, FlatBufferBuilder fbb) {
+        //insert into flatbuffer
         int k_ref =  fbb.createString(entry.getKey());
         int v_ref = fbb.createString(entry.getValue());
         return FB_Tuple.createFB_Tuple(fbb, k_ref, v_ref);
     }
 
     public FilterWrapper decode(byte[] serializedWithWrap) {
+        //wrap with bytebuffer
         ByteBuffer bb = ByteBuffer.wrap(serializedWithWrap);
         FB_FilterWrap fbWrapper = FB_FilterWrap.getRootAsFB_FilterWrap(bb);
         FilterWrapper wrapper = new FilterWrapper();
         byte[] dataBuffer = new byte[fbWrapper.dataLength()];
         fbWrapper.dataAsByteBuffer().get(dataBuffer, 0, fbWrapper.dataLength());
+        //getting tags and data separately
         wrapper.setData(dataBuffer);
         wrapper.setTags(getTags(fbWrapper));
         return wrapper;
     }
 
     public static Map<String, String> getTags(FB_FilterWrap filterWrapper) {
+        //getting tags from the full message
         int len = filterWrapper.tagsLength();
         Map<String, String> tags = new HashMap<String, String>();
         for ( int i = 0; i < len; i++ ) {

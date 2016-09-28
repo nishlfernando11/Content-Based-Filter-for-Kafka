@@ -16,22 +16,18 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Properties;
-import java.util.Scanner;
+import java.util.*;
 
 public class FilterConsumer {
 
     private static Coder codec = new Coder();
-    private static FilterExpression falseExpression = new MvelExpression("entity==1");
     private static FilterExpression trueExpression;
 
 
-    public static void start(String topic, ArrayList<String> contentArray) throws Exception {
+    public static void start(List<String> topics, ArrayList<String> contentArray) throws Exception {
 
         //Kafka consumer configuration settings
-        String topicName = topic;
+        //String topicName = topic;
         Properties props = new Properties();
 
         props.put("bootstrap.servers", "localhost:9092");
@@ -45,18 +41,18 @@ public class FilterConsumer {
         KafkaConsumer<byte[], byte[]> consumer = new KafkaConsumer<byte[], byte[]>(props);
 
         //Kafka Consumer subscribes list of topics here.
-        consumer.subscribe(Arrays.asList(topicName));
+        consumer.subscribe(topics);
 
         StringBuilder builder = new StringBuilder();
         for(int x = 0; x < contentArray.size(); x++){
-            builder.append("'"+contentArray.get(x)+"'==true");
-            if(x != contentArray.size()-1)builder.append(" && ");
+            builder.append(contentArray.get(x));
+            if(x != contentArray.size()-1)builder.append(" || ");
         }
         System.out.println(builder.toString());
 
         trueExpression = new MvelExpression(builder.toString());
         //print the topic name
-        System.out.println("Subscribed to topic " + topicName);
+        System.out.println("Subscribed to topic " + topics);
         int i = 0;
 
         while (true) {
@@ -66,10 +62,22 @@ public class FilterConsumer {
                 int len = res.length;
                 FilterWrapper wrappedMsg = codec.decode(record.value());
 
-                String recv = new String(wrappedMsg.getData());
 
+//                Map<String, String> tagSet = wrappedMsg.getTags();
+//
+//                try{
+//                    for(String content : contentArray){
+//                        if(tagSet.containsKey(content)){
+//                            String recv = new String(wrappedMsg.getData());
+//                            System.out.println(recv);
+//                            break;
+//                        }
+//                }}catch (NullPointerException e){
+//
+//                }
                 try{
                     if(trueExpression.isInteresting(wrappedMsg)){
+                        String recv = new String(wrappedMsg.getData());
                         System.out.println(recv);
                     }
                 }catch (NullPointerException e){
@@ -84,7 +92,7 @@ public class FilterConsumer {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Starting consumer...Enter your interests.. Press 'end' to terminate.");
-        String topic = args[1];
+        //String[] topic = args;
         Scanner scn = new Scanner(System.in);
         ArrayList<String> list = new ArrayList<String>();
         while(true){
@@ -93,6 +101,6 @@ public class FilterConsumer {
             list.add(input);
         }
         //String[] content = {args[3],args[4]};
-        start(topic, list);
+        start(Arrays.asList(args), list);
     }
 }

@@ -9,6 +9,11 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -27,37 +32,57 @@ import java.util.Properties;
  */
 public class FilterProducer {
 
-    private static Map<String,String> tags = new HashMap<String, String>() {{
-//        put("entity", "true");
-//        put("type", "true");
-//        put("long", "1283102390123");
-    }};
+
+    private static Map<String,String> tags = null;
 
     private static Coder codec = new Coder();
 
-    public static void main(String[] args) throws Exception{
+    public String topic;
 
+    public FilterProducer(String topic){
+        this.setTopic(topic);
+    }
 
-        String txt = "SLFP Minister Wijith Wijayamuni Zoysa said yesterday that it was the former president Mahinda Rajapaksa " +
-                "who governed the country using executive powers sidelining the premier and going against democratic values. He made " +
-                "these remarks in response to a statement made by former President and Kurunegala District MP Mahinda Rajapaksa that the" +
-                " country should be governed either by the President or the Prime Minister without contradicting each other. Addressing a " +
-                "media briefing at the SLFP headquarters, the Minister said the prime minister of the previous governments had been kept as " +
-                "a puppet by the executive president. “It was the Executive which dominated the country though the sovereignty of the " +
-                "government must be based on the executive, legislation and the judiciary. These three branches of governance should work " +
-                "together and equally,” the Minister said. He said the three branches of sovereignty operate independently under the ‘Yahapalanaya’ government today.";
+    public static void main(String args[]){
 
+        BufferedReader br = null;
+        String topic = args[0];
+        String fileName = args[1];
+        FilterProducer producer = new FilterProducer(topic);
 
-        tags = KeyWordExtractor.extract(txt, tags);
+        try {
+            String sCurrentLine;
+            br = new BufferedReader(new FileReader("D:\\"+fileName));
+            long start = System.nanoTime();
 
-        // Check arguments length value
-        String topicName = null;
-        if(args.length == 0){
-            topicName = "mytopic";
-        }else{
-            //Assign topicName to string variable
-            topicName = args[0].toString();
+            while ((sCurrentLine = br.readLine()) != null) {
+                try {
+                    producer.send(sCurrentLine);
+                } catch (Exception e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+            long stop = System.nanoTime();
+            System.out.println(stop - start);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    public void send(String message) throws Exception{
+
+//
+//        String txt = "SLFP Minister Wijith Wijayamuni Zoysa said yesterday that it was the former president Mahinda Rajapaksa " +
+//                "who governed the country using executive powers sidelining the premier and going against democratic values. He made " +
+//                "these remarks in response to a statement made by former President and Kurunegala District MP  that the" +
+//                " country should be governed either by Mahinda Rajapaksa the President or the Prime Minister without contradicting each other. Addressing a " +
+//                "media briefing at the SLFP headquarters, the Minister said the prime minister of the previous governments had been kept as " +
+//                "a puppet by the executive president. “It was the Executive which dominated the country though the sovereignty of the " +
+//                "government must be based on the executive, legislation and the judiciary. These three branches of governance should work " +
+//                "together and equally,” the Minister said. He said the three branches of sovereignty operate independently under the ‘Yahapalanaya’ government today.";
+
+
 
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
@@ -69,17 +94,35 @@ public class FilterProducer {
         props.put("key.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 
-
         Producer<byte[], byte[]> producer = new KafkaProducer<byte[], byte[]>(props);
-        System.out.println(tags);
-        for(int i = 0; i < 2; i++){
-            byte[] encoded = codec.encode(txt.getBytes(), tags);
-            producer.send(new ProducerRecord<byte[],byte[]>(topicName,encoded, encoded));
 
-            //FilterWrapper wrappedMsg = codec.decode(encoded);
-            //System.out.println(new String(wrappedMsg.getData()));
-        }
-        System.out.println("Messages sent successfully");
+
+        tags = KeyWordExtractor.extract(message, tags);
+        //System.out.println(tags);
+        long start = System.nanoTime();
+        int iret = 2;
+        byte[] encoded = codec.encode(message.getBytes(), tags);
+        producer.send(new ProducerRecord<byte[],byte[]>(getTopic(),encoded, encoded));
+//        for(int i = 0; i < iret; i++){
+//            byte[] encoded = codec.encode(message.getBytes(), tags);
+//            producer.send(new ProducerRecord<byte[],byte[]>(getTopic(),encoded, encoded));
+//
+//            //FilterWrapper wrappedMsg = codec.decode(encoded);
+//            //System.out.println(new String(wrappedMsg.getData()));
+//        }
+        long stop = System.nanoTime();
+//        System.out.println("Decode & Filter: " + iret + " calls, time taken" +
+//                " for each call:" + ((stop - start) * 1.0 / iret / 1000) + " micro secs");
+//        System.out.println("Messages sent successfully");
         producer.close();
+    }
+
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 }

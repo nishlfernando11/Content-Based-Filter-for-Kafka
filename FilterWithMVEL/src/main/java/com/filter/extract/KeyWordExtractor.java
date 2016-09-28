@@ -1,29 +1,47 @@
 package main.java.com.filter.extract;
 
-
-import com.sree.textbytes.jtopia.Configuration;
-import com.sree.textbytes.jtopia.TermDocument;
-import com.sree.textbytes.jtopia.TermsExtractor;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class KeyWordExtractor {
 
+    public static MaxentTagger tagger = new MaxentTagger(
+            "D:/Project/KeywordExtract/stanford-postagger-2015-12-09/model/stanford/2015/english-left3words-distsim.tagger");
+
     public static Map<String,String> extract(String message, Map<String,String> tags){
 
-        Configuration.setTaggerType("default");// "default" for lexicon POS tagger and "openNLP" for openNLP POS     tagger
-        Configuration.setSingleStrength(2);
-        Configuration.setNoLimitStrength(5);
-        // If tagger type is "default" , then set model location as "model/default/english-lexicon.txt"
-        // If tagger type is "openNLP" , then set model location as "model/openNLP/en-pos-maxent.bin"
-        Configuration.setModelFileLocation("D:/Project/KeywordExtract/jtopia/model/default/english-lexicon.txt");
-        TermsExtractor termExtractor = new TermsExtractor();
-        TermDocument termDocument = termExtractor.extractTerms(message);
+        // Initialize the tagger
 
-        for(int i=0; i<termDocument.getFinalFilteredTerms().keySet().size(); i++){
-            tags.put(termDocument.getFinalFilteredTerms().keySet().toArray()[i].toString(),"true");
+
+
+        // The tagged string
+        String tagged = tagger.tagString(message);
+
+        String[] x = tagged.split(" ");
+        ArrayList<String> list = new ArrayList<String>();
+
+        //System.out.println(tagged);
+        for(int i=0;i<x.length;i++){
+            //Check weather given word is proper noun and insert to header
+            if (x[i].substring(x[i].lastIndexOf("_")+1).equals("NNP")){
+                if(i!= x.length-1 && x[i+1].substring(x[i+1].lastIndexOf("_")+1).contains("NNP")){
+                    list.add(x[i].split("_")[0]+" "+x[i+1].split("_")[0]);
+                    i++;
+                }else{
+                    list.add(x[i].split("_")[0]);
+                }
+            }
         }
-
+        if(list.size() > 0){
+            tags = new HashMap<String, String>();
+            for(int i=0; i<list.size(); i++){
+                tags.put(list.get(i),"true");
+            }
+        }
+        //System.out.println(tags);
         return tags;
     }
 }
