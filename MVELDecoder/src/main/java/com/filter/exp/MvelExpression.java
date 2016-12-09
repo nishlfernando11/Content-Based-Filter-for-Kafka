@@ -1,4 +1,4 @@
-package main.java.com.filter.exp;
+package com.filter.exp;
 
 import org.mvel2.MVEL;
 import java.io.Serializable;

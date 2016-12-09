@@ -1,8 +1,8 @@
-package test.java.com.filter;
+package com.filter;
 
 
 import junit.framework.Assert;
-import main.java.com.filter.Coder;
+import com.filter.Coder;
 import org.junit.Test;
 
 import java.util.HashMap;

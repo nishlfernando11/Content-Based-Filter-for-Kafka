@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package main.java.com.filter.google.flatbuffers;
+package com.filter.google.flatbuffers;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-import static main.java.com.filter.google.flatbuffers.Constants.*;
+import static com.filter.google.flatbuffers.Constants.*;
 
 /**
  * Class that helps you build a FlatBuffer.  See the section

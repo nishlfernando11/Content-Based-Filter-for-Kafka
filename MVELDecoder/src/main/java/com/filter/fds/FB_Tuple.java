@@ -1,8 +1,8 @@
 // automatically generated, do not modify
-package main.java.com.filter.fds;
+package com.filter.fds;
 
-import main.java.com.filter.google.flatbuffers.FlatBufferBuilder;
-import main.java.com.filter.google.flatbuffers.Table;
+import com.filter.google.flatbuffers.FlatBufferBuilder;
+import com.filter.google.flatbuffers.Table;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 

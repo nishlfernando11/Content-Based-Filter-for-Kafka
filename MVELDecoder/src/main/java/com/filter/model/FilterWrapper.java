@@ -1,4 +1,4 @@
-package main.java.com.filter.model;
+package com.filter.model;
 
 
 import java.util.Map;

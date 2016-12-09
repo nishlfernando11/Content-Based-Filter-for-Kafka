@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package main.java.com.filter.google.flatbuffers;
+package com.filter.google.flatbuffers;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import static main.java.com.filter.google.flatbuffers.Constants.*;
+import static com.filter.google.flatbuffers.Constants.*;
 
 // All tables in the generated code derive from this class, and add their own accessors.
 public class Table {

@@ -1,14 +1,14 @@
-package main.java.com.filter;
+package com.filter;
 
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import main.java.com.filter.google.flatbuffers.FlatBufferBuilder;
-import main.java.com.filter.fds.FB_FilterWrap;
-import main.java.com.filter.fds.FB_Tuple;
-import main.java.com.filter.model.FilterWrapper;
+import com.filter.google.flatbuffers.FlatBufferBuilder;
+import com.filter.fds.FB_FilterWrap;
+import com.filter.fds.FB_Tuple;
+import com.filter.model.FilterWrapper;
 
 public class Coder {
 

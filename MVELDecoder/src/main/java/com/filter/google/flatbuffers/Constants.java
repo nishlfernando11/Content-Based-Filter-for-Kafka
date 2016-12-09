@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package main.java.com.filter.google.flatbuffers;
+package com.filter.google.flatbuffers;
 
 // Class that holds shared constants.
 

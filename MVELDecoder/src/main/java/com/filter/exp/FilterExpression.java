@@ -1,6 +1,6 @@
-package main.java.com.filter.exp;
+package com.filter.exp;
 
-import main.java.com.filter.model.FilterWrapper;
+import com.filter.model.FilterWrapper;
 import java.util.Map;
 
 public abstract class FilterExpression {

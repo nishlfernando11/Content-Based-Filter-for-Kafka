@@ -1,0 +1,10 @@
+com.filter
+com.filter.clients
+com.filter.exp
+com.filter.fds
+com.filter.google.flatbuffers
+com.filter.layer
+com.filter.model
+org.ahocorasick.interval
+org.ahocorasick.trie
+org.ahocorasick.trie.handler

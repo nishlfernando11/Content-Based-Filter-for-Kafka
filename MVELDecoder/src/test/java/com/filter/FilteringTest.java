@@ -1,11 +1,11 @@
-package test.java.com.filter;
+package com.filter;
 
 
 import junit.framework.Assert;
-import main.java.com.filter.Coder;
-import main.java.com.filter.exp.FilterExpression;
-import main.java.com.filter.exp.MvelExpression;
-import main.java.com.filter.model.FilterWrapper;
+import com.filter.Coder;
+import com.filter.exp.FilterExpression;
+import com.filter.exp.MvelExpression;
+import com.filter.model.FilterWrapper;
 import org.junit.Test;
 
 import java.util.HashMap;

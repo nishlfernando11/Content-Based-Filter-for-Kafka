@@ -1,0 +1,10 @@
+com\filter\google\flatbuffers\Table.class
+com\filter\google\flatbuffers\Constants.class
+com\filter\fds\FB_FilterWrap.class
+com\filter\exp\MvelExpression.class
+com\filter\model\FilterWrapper.class
+com\filter\fds\FB_Tuple.class
+com\filter\google\flatbuffers\Struct.class
+com\filter\google\flatbuffers\FlatBufferBuilder.class
+com\filter\exp\FilterExpression.class
+com\filter\Coder.class

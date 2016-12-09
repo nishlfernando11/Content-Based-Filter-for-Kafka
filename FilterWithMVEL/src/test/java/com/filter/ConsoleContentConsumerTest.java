@@ -1,4 +1,4 @@
-package test.java.com.filter;
+package com.filter;
 
 import java.lang.String;
 import java.lang.System;
