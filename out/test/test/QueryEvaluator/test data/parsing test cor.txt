@@ -1,0 +1,20 @@
+Brazil
+Football|Soccer
+Ronaldo|Brazil
+!Brazil
+Ronaldo&Brazil
+Brazil&Soccer
+((Brazil&Soccer)|Football)&!Ronaldo
+((Brazil&Soccer)|Football)&!(Ronaldo|Brazil)
+((Brazil&Soccer)|Spain)&!(Ronaldo|(Brazil&Football))
+((Brazil&Soccer)|Spain)&!(Ronaldo|(Brazil&Football))&((Football|Soccer|Ronaldo)&!Spain)
+!(Russia&America)|(Russia&War)
+!(Russia&America)
+(Russia&War)
+!(Russia&America)&(Russia&War)
+(Russia|North Korea)
+(Russia|North Korea|Missile)&(America|(War|Missile))
+Russia&America&War
+(Russia|North Korea|Missile)&(America|(War|Missile))&(!America&Missile)
+(Russia|North Korea|!Missile)&(America|(War|Missile))&(!America&Missile)|(North Korea&Missile)
+(!(Russia&North Korea)|!Missile)&(America|(War|Missile))&(!America&Missile)|(North Korea&Missile)

@@ -1,0 +1,17 @@
+QueryEvaluator
+QueryEvaluator.ast
+QueryEvaluator.ast.nonterminal
+QueryEvaluator.ast.terminal
+QueryEvaluator.lexer
+QueryEvaluator.parser
+com.filter
+com.filter.clients
+com.filter.clients.Interfaces
+com.filter.exp
+com.filter.fds
+com.filter.google.flatbuffers
+com.filter.layer
+com.filter.model
+org.ahocorasick.interval
+org.ahocorasick.trie
+org.ahocorasick.trie.handler

@@ -1,0 +1,120 @@
+###
+build with gradle windows
+C:\Users\user\Documents\Apps\gradle-2.13\bin\gradle.bat
+
+gradlew.bat jar
+
+### Kafka  single broker
+
+1.kafka start servers
+
+bin\windows\zookeeper-server-start.bat config\zookeeper.properties
+
+bin\windows\kafka-server-start.bat config\server.properties
+
+2.create topic
+
+bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic <test>
+
+
+======================CBAK==================================
+build project from main folder CBAK
+mvn clean install
+
+copy FilterWithMVEL/target  FilterWithMVEL.jar to FilterWithMVEL folder
+
+start content consumer bat in new terminal
+
+StartContentConsumer.bat <topic name>
+specify content
+end
+
+start content producer bat in another terminal
+
+StartContentProducer.bat <topic name> <filename>
+
+
+============================================================
+
+3.see topic list
+
+bin\windows\kafka-topics.bat --list --zookeeper localhost:2181
+
+4.send some messages  -  run producer
+
+bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic <test>
+(type some messages)
+
+5.run consumer
+
+bin\windows\kafka-console-consumer.bat --zookeeper localhost:2181 --topic <test> --from-beginning
+(receive messages under topic test
+
+
+### multi broker cluster
+
+First we make a config file for each of the brokers:
+
+> copy config\server.properties config\server-1.properties
+> copy config\server.properties config\server-2.properties
+
+edit following files
+
+config\server-1.properties:
+    broker.id=1
+    listeners=PLAINTEXT://:9093
+    log.dir=/tmp/kafka-logs-1
+
+config\server-2.properties:
+    broker.id=2
+    listeners=PLAINTEXT://:9094
+    log.dir=/tmp/kafka-logs-2
+
+unique broker id
+
+We already have Zookeeper and our single node started, so we just need to start the two new nodes:
+
+> bin\windows\kafka-server-start.bat config\server-1.properties &
+...
+> bin\windows\kafka-server-start.bat config\server-2.properties &
+...
+
+Now create a new topic with a replication factor of three:
+
+> bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic my-replicated-topic
+
+Okay but now that we have a cluster how can we know which broker is doing what? To see that run the "describe topics" command:
+
+> bin\windows\kafka-topics.bat --describe --zookeeper localhost:2181 --topic my-replicated-topic
+Topic:my-replicated-topic	PartitionCount:1	ReplicationFactor:3	Configs:
+	Topic: my-replicated-topic	Partition: 0	Leader: 1	Replicas: 1,2,0	Isr: 1,2,0
+
+We can run the same command on the original topic we created to see where it is:
+
+> bin\windows\kafka-topics.bat --describe --zookeeper localhost:2181 --topic test
+Topic:test	PartitionCount:1	ReplicationFactor:1	Configs:
+	Topic: test	Partition: 0	Leader: 0	Replicas: 0	Isr: 0
+
+
+Let's publish a few messages to our new topic:
+
+> bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic my-replicated-topic
+...
+my test message 1
+my test message 2
+^C
+Now let's consume these messages:
+> bin\windows\kafka-console-consumer.bat --zookeeper localhost:2181 --from-beginning --topic my-replicated-topic
+...
+my test message 1
+my test message 2
+^C
+-------
+Now let's test out fault-tolerance. Broker 1 was acting as the leader so let's kill it:
+> ps | grep server-1.properties
+7564 ttys002    0:15.91 /System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java...
+> kill -9 7564
+Leadership has switched to one of the slaves and node 1 is no longer in the in-sync replica set:
+> bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic my-replicated-topic
+Topic:my-replicated-topic	PartitionCount:1	ReplicationFactor:3	Configs:
+	Topic: my-replicated-topic	Partition: 0	Leader: 2	Replicas: 1,2,0	Isr: 2,0

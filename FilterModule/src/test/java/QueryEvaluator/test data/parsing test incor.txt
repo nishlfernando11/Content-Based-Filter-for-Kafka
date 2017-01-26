@@ -1,0 +1,12 @@
+brazil&&
+&brazil
+|soccer
+&&soccer|brazil
+(soccer)|&tall)
+(soccer&)fall
+(soccer&)fall|soccer&)fall(soccer&)fall(soccer&)fall
+&soccer&)fall&
+(!soccer&)fall
+(soccer&)fall|soccer&(soccer&)
+(brazil&&soccer&)fall
+||brazil&italy
